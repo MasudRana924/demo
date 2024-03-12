@@ -5,10 +5,28 @@ const FeaturedJobList = () => {
   const [Jobs, setJobs] = useState([]);
   const [DataLength, setDataLength] = useState(4);
 
+  // useEffect(() => {
+  //   fetch("./data/jobs.json")
+  //     .then((res) => res.json())
+  //     .then((data) => setJobs(data));
+  // }, []);
   useEffect(() => {
-    fetch("data/jobs.json")
-      .then((res) => res.json())
-      .then((data) => setJobs(data));
+    fetch("./data/jobs.json")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch job data");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error("Fetched data is not an array");
+        }
+        setJobs(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching job data:", error);
+      });
   }, []);
   return (
     <div className="container">
