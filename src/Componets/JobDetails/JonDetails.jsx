@@ -9,10 +9,42 @@ import { MdOutlineCurrencyExchange } from "react-icons/md";
 import { saveJobApplication } from "../../Utilitys/SaveToLocalStoage";
 
 const JonDetails = () => {
+  // const jobs = useLoaderData();
+  // const { id } = useParams();
+  // const idInit = parseInt(id);
+  // const job = jobs.find((job) => job.id == id);
+  // const {
+  //   job_title,
+  //   salary,
+  //   job_description,
+  //   job_responsibility,
+  //   educational_requirements,
+  //   experiences,
+  //   contact_information,
+  // } = job;
+  // const hendelApplyjobs = () => {
+  //   saveJobApplication(idInit);
+  //   toast("application added");
+  // };
   const jobs = useLoaderData();
   const { id } = useParams();
   const idInit = parseInt(id);
-  const job = jobs.find((job) => job.id == id);
+
+  // Check if jobs is an array
+  if (!Array.isArray(jobs)) {
+    console.error("Jobs data is not an array:", jobs);
+    return <div>Error: Unable to fetch job details</div>;
+  }
+
+  // Find job by id
+  const job = jobs.find((job) => job.id === idInit);
+
+  // Check if job is found
+  if (!job) {
+    console.error("Job with id", idInit, "not found in jobs:", jobs);
+    return <div>Error: Job not found</div>;
+  }
+
   const {
     job_title,
     salary,
@@ -22,10 +54,12 @@ const JonDetails = () => {
     experiences,
     contact_information,
   } = job;
+
   const hendelApplyjobs = () => {
     saveJobApplication(idInit);
-    toast("application added");
+    toast("Application added");
   };
+
   return (
     <div>
       <h1 className="text-5xl py-10 text-center font-bold">Job Details</h1>
